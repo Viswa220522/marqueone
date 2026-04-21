@@ -200,28 +200,7 @@ export default function Hero() {
           }}
         />
 
-        {/* Logo */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '32px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 10,
-            opacity: currentFrameIndex < 35 ? 0.85 : 0,
-            transition: 'opacity 1.5s ease',
-          }}
-        >
-          <img
-            src="/hero_images/marqueone_logo.png"
-            alt="Marque One"
-            style={{
-              width: '80px',
-              height: 'auto',
-              filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.8))',
-            }}
-          />
-        </div>
+
 
         {/* Cinematic Text */}
         <div

@@ -12,13 +12,16 @@ const navLinks = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 80);
+      const y = window.scrollY;
+      setScrollY(y);
+      setScrolled(y > 80);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -82,6 +85,30 @@ export default function Navbar() {
         >
           Marque One
         </a>
+
+        {/* Center Logo Icon */}
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 200,
+            pointerEvents: 'none',
+            opacity: scrollY < 300 ? 0.85 : 0,
+            transition: 'opacity 1s ease',
+          }}
+        >
+          <img
+            src="/hero_images/marqueone_logo.png"
+            alt="Logo"
+            style={{
+              width: '80px',
+              height: 'auto',
+              filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.8))',
+            }}
+          />
+        </div>
 
         {/* Desktop Links */}
         <div
