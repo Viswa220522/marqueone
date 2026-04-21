@@ -25,23 +25,23 @@ export default function GarageSection() {
   return (
     <section 
       id="garage" 
-      className="relative px-6" 
+      className="relative" 
       style={{ 
         marginTop: '-100vh', 
         paddingTop: '20vh', 
-        paddingBottom: '4rem',
+        paddingBottom: '60px',
         zIndex: 20,
         background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.9) 30vh, #000 60vh, #000 100%)',
         pointerEvents: 'none', 
       }}
     >
-      <div style={{ maxWidth: '1280px', margin: '0 auto', pointerEvents: 'auto' }}>
+      <div className="page-container" style={{ pointerEvents: 'auto' }}>
         <motion.div 
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
           viewport={{ once: true, margin: "0px 0px -100px 0px" }}
-          style={{ marginBottom: '80px', textAlign: 'center' }}
+          style={{ marginBottom: '60px', textAlign: 'center' }}
         >
           <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.75rem)', fontWeight: 300, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Marque One Garage

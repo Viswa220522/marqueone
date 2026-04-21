@@ -34,6 +34,19 @@ body {
   padding: 0 24px;
 }
 
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (max-width: 640px) {
+  .footer-watermark {
+    font-size: clamp(60px, 18vw, 100px) !important;
+  }
+}
+
 /* Glassmorphism card */
 .glass-card {
   -webkit-backdrop-filter: blur(20px);

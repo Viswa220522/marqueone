@@ -31,8 +31,8 @@ const socialIcons = [
 
 export default function Footer() {
   return (
-    <footer className="relative w-full overflow-hidden bg-black pb-10 pt-20">
-      <div className="footer-container mb-[60px]">
+    <footer className="relative w-full overflow-hidden bg-black pb-10 pt-12 md:pt-20">
+      <div className="footer-container mb-8 md:mb-[60px]">
         <div
           aria-hidden="true"
           className="footer-inner"
@@ -43,19 +43,19 @@ export default function Footer() {
 
       <div className="footer-container">
         <div className="footer-inner relative z-10">
-          <div className="grid grid-cols-1 gap-[60px] md:grid-cols-2 xl:grid-cols-4">
-            <div className="text-center md:text-left">
+          <div className="flex flex-col gap-5 md:grid md:grid-cols-2 md:gap-[60px] xl:grid-cols-4">
+            <div className="text-center">
               <h3 className="mb-5 text-sm font-light uppercase tracking-[0.2em] text-white">
                 MARQUE <span className="text-[#ff0000]">ONE</span>
               </h3>
-              <p className="mx-auto max-w-[280px] text-[13px] font-normal leading-relaxed text-white/60 md:mx-0">
+              <p className="mx-auto max-w-[320px] text-center text-[13px] font-normal leading-relaxed text-white/60">
                 Where automotive engineering meets artistic perfection. Curated for those who live beyond the limit.
               </p>
             </div>
 
             <div className="text-center md:text-left">
               <h4 className="mb-5 text-[12px] font-bold uppercase tracking-[0.2em] text-white/50">NAVIGATION</h4>
-              <div className="flex flex-col gap-[14px]">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-center md:flex md:flex-col md:gap-[14px] md:text-left">
                 {footerLinks.slice(0, 4).map((link) => (
                   <a
                     key={link.name}
@@ -69,8 +69,8 @@ export default function Footer() {
             </div>
 
             <div className="text-center md:text-left">
-              <h4 className="mb-5 text-[12px] font-bold uppercase tracking-[0.2em] text-white/50">LEGAL</h4>
-              <div className="flex flex-col gap-[14px]">
+              <h4 className="text-[12px] font-bold uppercase tracking-[0.2em] text-white/50">LEGAL</h4>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 md:flex-col md:items-start md:gap-3">
                 {footerLinks.slice(4).map((link) => (
                   <a
                     key={link.name}
@@ -84,7 +84,7 @@ export default function Footer() {
             </div>
 
             <div className="text-center md:text-left">
-              <h4 className="mb-5 text-[12px] font-bold uppercase tracking-[0.2em] text-white/50">FOLLOW US</h4>
+              <h4 className="mb-4 text-[12px] font-bold uppercase tracking-[0.2em] text-white/50 md:mb-5">FOLLOW US</h4>
               <div className="flex justify-center gap-4 md:justify-start">
                 {socialIcons.map((social) => (
                   <motion.a
@@ -121,7 +121,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-16 flex flex-col items-center gap-3 text-center md:mt-24 md:flex-row md:items-center md:justify-between md:gap-4 md:text-left">
+          <div className="mt-10 flex flex-col items-center gap-3 text-center md:mt-24 md:flex-row md:items-center md:justify-between md:gap-4 md:text-left">
             <div className="hidden md:block md:flex-1" />
             <div className="md:flex md:flex-1 md:justify-center">
               <p className="text-[10px] uppercase tracking-[0.1em] text-white/40 text-center">
@@ -134,10 +134,10 @@ export default function Footer() {
 
           <div
             aria-hidden="true"
-            className="pointer-events-none mt-8 overflow-hidden text-center select-none"
+            className="pointer-events-none mt-6 overflow-hidden text-center select-none md:mt-8"
           >
             <div
-              className="whitespace-nowrap font-['Cinzel','Playfair_Display',serif] font-bold tracking-[0.08em]"
+              className="footer-watermark whitespace-nowrap font-['Cinzel','Playfair_Display',serif] font-bold tracking-[0.08em]"
               style={{
                 fontSize: 'clamp(64px, 11vw, 140px)',
                 lineHeight: 0.85,

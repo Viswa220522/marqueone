@@ -6,14 +6,14 @@ export default function ContactSection() {
   return (
     <section id="contact" style={{ 
       position: 'relative', 
-      padding: '100px 24px', 
+      padding: '60px 0', 
       background: '#000', 
       display: 'flex', 
       flexDirection: 'column', 
       alignItems: 'center', 
       justifyContent: 'center', 
       textAlign: 'center',
-      minHeight: '60vh'
+      minHeight: '50vh'
     }}>
       {/* Background Glow */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
@@ -29,13 +29,14 @@ export default function ContactSection() {
         initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
-        style={{ position: 'relative', zIndex: 10, maxWidth: '640px' }}
+        className="page-container"
+        style={{ position: 'relative', zIndex: 10, maxWidth: '688px' }}
       >
         <h2 style={{ 
           fontSize: 'clamp(2rem, 5vw, 3.75rem)', 
           fontWeight: 300, 
           letterSpacing: '-0.02em', 
-          marginBottom: '48px',
+          marginBottom: '40px',
           lineHeight: 1.2
         }}>
           Experience the <br /> 

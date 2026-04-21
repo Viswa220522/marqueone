@@ -49,13 +49,14 @@ export default function MotorClubSection() {
         </svg>
       </div>
 
-      <div style={{ maxWidth: '1280px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 10 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '48px', alignItems: 'center' }}>
+      <div className="page-container" style={{ position: 'relative', zIndex: 10 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '40px', alignItems: 'center' }}>
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
+            className="mx-auto flex max-w-[480px] flex-col items-center text-center sm:mx-0 sm:block sm:max-w-none sm:text-left"
           >
             <span style={{ color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.4em', fontSize: '0.75rem', marginBottom: '24px', display: 'block' }}>
               Elite Access

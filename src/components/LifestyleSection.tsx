@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function LifestyleSection() {
   return (
-    <section id="lifestyle" style={{ position: 'relative', padding: '100px 24px', background: '#000', overflow: 'hidden' }}>
+    <section id="lifestyle" style={{ position: 'relative', padding: '60px 0', background: '#000', overflow: 'hidden' }}>
       {/* Ambient Glow */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
         <div style={{ 
@@ -18,7 +18,7 @@ export default function LifestyleSection() {
         }} />
       </div>
 
-      <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
+      <div className="page-container" style={{ textAlign: 'center', position: 'relative', zIndex: 10 }}>
         {/* Background Watermark */}
         <motion.div 
           initial={{ opacity: 0 }}
@@ -49,7 +49,7 @@ export default function LifestyleSection() {
               fontWeight: 300, 
               lineHeight: 1.15, 
               maxWidth: '900px', 
-              margin: '0 auto 48px' 
+              margin: '0 auto 40px' 
             }}
           >
             Curated experiences for those who live beyond the limit.
@@ -63,7 +63,7 @@ export default function LifestyleSection() {
               display: 'flex', 
               flexWrap: 'wrap', 
               justifyContent: 'center', 
-              gap: '48px', 
+               gap: '40px', 
               color: 'rgba(255,255,255,0.4)', 
               textTransform: 'uppercase', 
               letterSpacing: '0.3em', 
