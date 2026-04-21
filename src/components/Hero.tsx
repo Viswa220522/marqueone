@@ -21,7 +21,7 @@ const cinematicTexts = [
   { start: 40, end: 90, text: 'A presence' },
   { start: 90, end: 140, text: 'Engineered for those who demand more' },
   { start: 140, end: 180, text: "You don't watch it. You become part of it" },
-  { start: 180, end: 222, text: 'Welcome to Marque One' },
+  { start: 180, end: 222, text: 'Welcome to Marque ', highlight: 'One' },
 ];
 
 function getInterpolatedBlur(frame: number): number {
@@ -236,6 +236,11 @@ export default function Hero() {
                 }}
               >
                 {item.text}
+                {item.highlight && (
+                  <span style={{ color: '#8B0000', fontSize: 'inherit', fontWeight: 'inherit' }}>
+                    {item.highlight}
+                  </span>
+                )}
               </h2>
             );
           })}

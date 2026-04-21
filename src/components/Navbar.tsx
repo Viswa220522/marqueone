@@ -83,7 +83,7 @@ export default function Navbar() {
             cursor: 'pointer',
           }}
         >
-          Marque One
+          Marque <span style={{ color: '#8B0000', fontSize: 'inherit', fontWeight: 'inherit' }}>One</span>
         </a>
 
         {/* Center Logo Icon */}

@@ -21,6 +21,19 @@ body {
   overflow-x: hidden;
 }
 
+.footer-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
 /* Glassmorphism card */
 .glass-card {
   -webkit-backdrop-filter: blur(20px);

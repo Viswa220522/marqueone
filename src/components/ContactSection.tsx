@@ -6,14 +6,14 @@ export default function ContactSection() {
   return (
     <section id="contact" style={{ 
       position: 'relative', 
-      padding: '160px 24px', 
+      padding: '100px 24px', 
       background: '#000', 
       display: 'flex', 
       flexDirection: 'column', 
       alignItems: 'center', 
       justifyContent: 'center', 
       textAlign: 'center',
-      minHeight: '80vh'
+      minHeight: '60vh'
     }}>
       {/* Background Glow */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
@@ -61,10 +61,7 @@ export default function ContactSection() {
           Begin Your Journey
         </motion.button>
 
-        <div style={{ marginTop: '96px', color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
-          <p style={{ marginBottom: '16px' }}>Geneva &bull; London &bull; Dubai</p>
-          <p style={{ fontSize: '0.625rem' }}>&copy; 2026 Marque One. All Rights Reserved.</p>
-        </div>
+
       </motion.div>
     </section>
   );

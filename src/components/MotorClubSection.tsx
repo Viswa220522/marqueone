@@ -8,12 +8,12 @@ export default function MotorClubSection() {
       id="motorclub"
       style={{ 
         position: 'relative', 
-        minHeight: '100vh', 
+        minHeight: '70vh', 
         display: 'flex', 
         alignItems: 'center', 
         overflow: 'hidden', 
         background: '#000',
-        padding: '80px 24px'
+        padding: '60px 24px'
       }}
     >
       {/* Background Animated Lines */}

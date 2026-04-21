@@ -29,7 +29,7 @@ export default function GarageSection() {
       style={{ 
         marginTop: '-100vh', 
         paddingTop: '20vh', 
-        paddingBottom: '8rem',
+        paddingBottom: '4rem',
         zIndex: 20,
         background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.9) 30vh, #000 60vh, #000 100%)',
         pointerEvents: 'none', 

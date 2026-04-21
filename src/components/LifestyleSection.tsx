@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function LifestyleSection() {
   return (
-    <section id="lifestyle" style={{ position: 'relative', padding: '160px 24px', background: '#000', overflow: 'hidden' }}>
+    <section id="lifestyle" style={{ position: 'relative', padding: '100px 24px', background: '#000', overflow: 'hidden' }}>
       {/* Ambient Glow */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
         <div style={{ 
