@@ -31,8 +31,8 @@ const socialIcons = [
 
 export default function Footer() {
   return (
-    <footer className="relative w-full overflow-hidden bg-black pb-10 pt-12 md:pt-20">
-      <div className="footer-container mb-8 md:mb-[60px]">
+    <footer className="relative w-full overflow-hidden bg-black pb-8 pt-10 md:pb-10 md:pt-20">
+      <div className="footer-container mb-6 md:mb-[60px]">
         <div
           aria-hidden="true"
           className="footer-inner"
@@ -121,7 +121,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-6 flex flex-col items-center gap-3 text-center md:mt-24 md:flex-row md:items-center md:justify-between md:gap-4 md:text-left">
+          <div className="mt-5 flex flex-col items-center gap-3 text-center md:mt-24 md:flex-row md:items-center md:justify-between md:gap-4 md:text-left">
             <div className="hidden md:block md:flex-1" />
             <div className="md:flex md:flex-1 md:justify-center">
               <p className="text-[10px] uppercase tracking-[0.1em] text-white/40 text-center">
