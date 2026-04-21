@@ -43,18 +43,18 @@ export default function Footer() {
 
       <div className="footer-container">
         <div className="footer-inner relative z-10">
-          <div className="flex flex-col gap-5 md:grid md:grid-cols-2 md:gap-[60px] xl:grid-cols-4">
-            <div className="text-center">
-              <h3 className="mb-5 text-sm font-light uppercase tracking-[0.2em] text-white">
+          <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-[60px] xl:grid-cols-4">
+            <div className="flex flex-col items-center text-center md:block md:text-center">
+              <h3 className="mb-4 text-sm font-light uppercase tracking-[0.2em] text-white md:mb-5">
                 MARQUE <span className="text-[#ff0000]">ONE</span>
               </h3>
-              <p className="mx-auto max-w-[320px] text-center text-[13px] font-normal leading-relaxed text-white/60">
+              <p className="mx-auto max-w-[280px] text-center text-[13px] font-normal leading-relaxed text-white/60 md:max-w-[320px]">
                 Where automotive engineering meets artistic perfection. Curated for those who live beyond the limit.
               </p>
             </div>
 
             <div className="text-center md:text-left">
-              <h4 className="mb-5 text-[12px] font-bold uppercase tracking-[0.2em] text-white/50">NAVIGATION</h4>
+              <h4 className="mb-4 text-[12px] font-bold uppercase tracking-[0.2em] text-white/50 md:mb-5">NAVIGATION</h4>
               <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-center md:flex md:flex-col md:gap-[14px] md:text-left">
                 {footerLinks.slice(0, 4).map((link) => (
                   <a
@@ -121,7 +121,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col items-center gap-3 text-center md:mt-24 md:flex-row md:items-center md:justify-between md:gap-4 md:text-left">
+          <div className="mt-6 flex flex-col items-center gap-3 text-center md:mt-24 md:flex-row md:items-center md:justify-between md:gap-4 md:text-left">
             <div className="hidden md:block md:flex-1" />
             <div className="md:flex md:flex-1 md:justify-center">
               <p className="text-[10px] uppercase tracking-[0.1em] text-white/40 text-center">
@@ -134,7 +134,7 @@ export default function Footer() {
 
           <div
             aria-hidden="true"
-            className="pointer-events-none mt-6 overflow-hidden text-center select-none md:mt-8"
+            className="pointer-events-none mt-4 overflow-hidden text-center select-none md:mt-8"
           >
             <div
               className="footer-watermark whitespace-nowrap font-['Cinzel','Playfair_Display',serif] font-bold tracking-[0.08em]"
