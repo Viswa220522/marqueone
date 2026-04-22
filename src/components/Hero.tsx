@@ -123,7 +123,7 @@ export default function Hero() {
 
 
   // ── Draw a single frame onto the canvas ───────────────────────
-  const drawFrame = (index: number, overlapProgress: number = 0) => {
+  function drawFrame(index: number, overlapProgress: number = 0) {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     const img = imagesRef.current[index];
@@ -159,7 +159,7 @@ export default function Hero() {
     ctx.clearRect(0, 0, w, h);
     ctx.drawImage(img, ox, oy, dw, dh);
     ctx.filter = 'none';
-  };
+  }
 
   // ── Resize → redraw current frame ─────────────────────────────
   useEffect(() => {

@@ -1,6 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useAnimationControls } from 'framer-motion';
+import { GlassCard } from '@developer-hub/liquid-glass';
 
 const navLinks = [
   { label: 'Home', href: '#hero' },
@@ -10,10 +13,177 @@ const navLinks = [
   { label: 'Contact', href: '#contact' },
 ];
 
+type NavPillRect = {
+  x: number;
+  top: number;
+  width: number;
+  height: number;
+};
+
+const pillEase: [number, number, number, number] = [0.4, 0, 0.2, 1];
+const moveEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const navContainerRef = useRef<HTMLDivElement>(null);
+  const navItemRefs = useRef<Array<HTMLAnchorElement | null>>([]);
+  const fadeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const pillControls = useAnimationControls();
+  const currentPillRectRef = useRef<NavPillRect | null>(null);
+  const animationIdRef = useRef(0);
+
+  const getPillRect = (target: HTMLElement): NavPillRect | null => {
+    const container = navContainerRef.current;
+    if (!container) return null;
+
+    const targetRect = target.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    return {
+      x: targetRect.left - containerRect.left,
+      top: targetRect.top - containerRect.top,
+      width: targetRect.width,
+      height: targetRect.height,
+    };
+  };
+
+  const animatePillTo = async (nextRect: NavPillRect) => {
+    const currentRect = currentPillRectRef.current;
+    const animationId = ++animationIdRef.current;
+
+    pillControls.stop();
+
+    if (
+      currentRect &&
+      currentRect.x === nextRect.x &&
+      currentRect.top === nextRect.top &&
+      currentRect.width === nextRect.width &&
+      currentRect.height === nextRect.height
+    ) {
+      await pillControls.start({
+        opacity: 1,
+        scaleX: 1,
+        borderRadius: '999px',
+        transition: { duration: 0.2, ease: 'easeOut' },
+      });
+      return;
+    }
+
+    if (!currentRect) {
+      const circleSize = nextRect.height;
+      const circleX = nextRect.x + (nextRect.width - circleSize) / 2;
+
+      pillControls.set({
+        x: circleX,
+        top: nextRect.top,
+        width: circleSize,
+        height: circleSize,
+        opacity: 0,
+        scaleX: 0.94,
+        borderRadius: '50%',
+      });
+
+      await pillControls.start({
+        opacity: 1,
+        scaleX: 1,
+        transition: { duration: 0.18, ease: pillEase },
+      });
+
+      if (animationId !== animationIdRef.current) return;
+
+      await pillControls.start({
+        x: nextRect.x,
+        top: nextRect.top,
+        width: nextRect.width,
+        height: nextRect.height,
+        opacity: 1,
+        scaleX: 1,
+        borderRadius: '999px',
+        transition: { duration: 0.24, ease: 'easeOut' },
+      });
+
+      if (animationId !== animationIdRef.current) return;
+      currentPillRectRef.current = nextRect;
+      return;
+    }
+
+    const circleSize = Math.min(currentRect.height, nextRect.height);
+    const currentCircleX = currentRect.x + (currentRect.width - circleSize) / 2;
+    const nextCircleX = nextRect.x + (nextRect.width - circleSize) / 2;
+    const currentCircleTop = currentRect.top + (currentRect.height - circleSize) / 2;
+    const nextCircleTop = nextRect.top + (nextRect.height - circleSize) / 2;
+    const travelDistance = Math.abs(nextCircleX - currentCircleX);
+    const moveDuration = Math.min(0.45, Math.max(0.3, 0.3 + travelDistance * 0.00035));
+
+    await pillControls.start({
+      x: currentCircleX,
+      top: currentCircleTop,
+      width: circleSize,
+      height: circleSize,
+      opacity: 1,
+      scaleX: 1,
+      borderRadius: '50%',
+      transition: { duration: 0.2, ease: pillEase },
+    });
+
+    if (animationId !== animationIdRef.current) return;
+
+    await pillControls.start({
+      x: nextCircleX,
+      top: nextCircleTop,
+      width: circleSize,
+      height: circleSize,
+      opacity: 1,
+      scaleX: 1.04,
+      borderRadius: '50%',
+      transition: { duration: moveDuration, ease: moveEase },
+    });
+
+    if (animationId !== animationIdRef.current) return;
+
+    await pillControls.start({
+      x: nextRect.x,
+      top: nextRect.top,
+      width: nextRect.width,
+      height: nextRect.height,
+      opacity: 1,
+      scaleX: 1,
+      borderRadius: '999px',
+      transition: { duration: 0.24, ease: 'easeOut' },
+    });
+
+    if (animationId !== animationIdRef.current) return;
+    currentPillRectRef.current = nextRect;
+  };
+
+  const fadeOutPill = async () => {
+    const currentRect = currentPillRectRef.current;
+    if (!currentRect) return;
+
+    const animationId = ++animationIdRef.current;
+    const circleSize = currentRect.height;
+
+    pillControls.stop();
+
+    await pillControls.start({
+      x: currentRect.x + (currentRect.width - circleSize) / 2,
+      top: currentRect.top,
+      width: circleSize,
+      height: circleSize,
+      opacity: 0,
+      scaleX: 0.98,
+      borderRadius: '50%',
+      transition: { duration: 0.22, ease: pillEase },
+    });
+
+    if (animationId !== animationIdRef.current) return;
+    currentPillRectRef.current = null;
+    pillControls.set({ opacity: 0, scaleX: 1 });
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +203,56 @@ export default function Navbar() {
     }
     setMenuOpen(false);
   };
+
+  const handleNavHover = (e: React.MouseEvent, index: number) => {
+    // Mobile fallback check: disable liquid glass movement on touch devices
+    const isTouchDevice =
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia('(pointer: coarse)').matches;
+    if (isTouchDevice) return;
+
+    if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current);
+    setHoveredIndex(index);
+
+    const target = e.currentTarget as HTMLElement;
+    const nextRect = getPillRect(target);
+    if (nextRect) {
+      void animatePillTo(nextRect);
+    }
+  };
+
+  const handleNavLeave = () => {
+    fadeTimeoutRef.current = setTimeout(() => {
+      setHoveredIndex(null);
+      void fadeOutPill();
+    }, 100);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (hoveredIndex === null) return;
+      const target = navItemRefs.current[hoveredIndex];
+      if (!target) return;
+
+      const nextRect = getPillRect(target);
+      if (!nextRect) return;
+
+      currentPillRectRef.current = nextRect;
+      pillControls.set({
+        x: nextRect.x,
+        top: nextRect.top,
+        width: nextRect.width,
+        height: nextRect.height,
+        opacity: 1,
+        scaleX: 1,
+        borderRadius: '999px',
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [hoveredIndex, pillControls]);
 
   return (
     <nav
@@ -99,32 +319,99 @@ export default function Navbar() {
             transition: 'opacity 1s ease',
           }}
         >
-          <img
+          <Image
             src="/hero_images/marqueone_logo.png"
             alt="Logo"
+            width={80}
+            height={80}
             style={{
               width: '80px',
               height: 'auto',
               filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.8))',
             }}
+            priority
           />
         </div>
 
         {/* Desktop Links */}
         <div
+          ref={navContainerRef}
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: '32px',
+            position: 'relative',
           }}
           className="nav-desktop"
+          onMouseEnter={() => {
+            if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current);
+          }}
+          onMouseLeave={handleNavLeave}
         >
-          {navLinks.slice(1).map((link) => (
+          {/* Shared Liquid Glass Element */}
+          <motion.div
+            animate={pillControls}
+            initial={{ opacity: 0 }}
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              originX: 0.5,
+              pointerEvents: 'none',
+              zIndex: 1,
+              borderRadius: '9999px',
+              overflow: 'hidden',
+              display: 'block',
+            }}
+          >
+            <GlassCard 
+              cornerRadius={9999} 
+              blurAmount={12} 
+              displacementScale={4} 
+              padding="0"
+              style={{
+                width: '100%',
+                height: '100%',
+                margin: 0,
+                padding: 0,
+                borderRadius: '9999px',
+                background: 'rgba(255, 255, 255, 0.07)',
+                border: '1px solid rgba(255, 255, 255, 0.14)',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 24px rgba(0, 0, 0, 0.18)',
+              }}
+            >
+              {/* Subtle inner highlight to enhance pill depth */}
+              <div 
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '9999px',
+                  background: 'rgba(255, 0, 0, 0)',
+                  backdropFilter: 'blur(14px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(14px) saturate(180%)',
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '9999px',
+                  background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 60%)',
+                }}
+              />
+            </GlassCard>
+          </motion.div>
+
+          {navLinks.slice(1).map((link, index) => (
             <a
               key={link.href}
+              ref={(element) => {
+                navItemRefs.current[index] = element;
+              }}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="nav-link"
+              onMouseEnter={(e) => handleNavHover(e, index)}
+              className="nav-link nav-item" // nav-item class for CustomCursor detection
               style={{
                 fontSize: '0.75rem',
                 fontWeight: 400,
@@ -138,9 +425,23 @@ export default function Navbar() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                color: hoveredIndex === index ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.6)',
+                transition: 'color 0.3s ease',
               }}
             >
-              <span style={{ position: 'relative', zIndex: 2 }}>{link.label}</span>
+              {/* Magnetic Text Sync */}
+              <span 
+                style={{ 
+                  position: 'relative', 
+                  zIndex: 2,
+                  display: 'inline-block',
+                  transform: hoveredIndex === index ? 'scale(1.05)' : 'scale(1)',
+                  filter: hoveredIndex === index ? 'brightness(1.15)' : 'brightness(1)',
+                  transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease'
+                }}
+              >
+                {link.label}
+              </span>
             </a>
           ))}
         </div>
@@ -209,32 +510,6 @@ export default function Navbar() {
       )}
 
       <style jsx>{`
-        .nav-link {
-          color: rgba(255, 255, 255, 0.5);
-          transition: color 0.3s ease;
-        }
-        .nav-link:hover {
-          color: rgba(255, 255, 255, 1) !important;
-        }
-        .nav-link::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border-radius: 9999px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          opacity: 0;
-          transform: scale(1);
-          transition: all 0.3s ease;
-          z-index: 1;
-        }
-        .nav-link:hover::before {
-          opacity: 1;
-          transform: scale(1.05);
-        }
-
         @media (max-width: 768px) {
           .nav-desktop {
             display: none !important;

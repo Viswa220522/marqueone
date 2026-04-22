@@ -7,10 +7,12 @@ import ScrollToTop from '@/components/ScrollToTop';
 import Footer from '@/components/Footer';
 import SmoothScroll from '@/components/SmoothScroll';
 import Navbar from '@/components/Navbar';
+import CustomCursor from '@/components/CustomCursor';
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
+      <CustomCursor />
       <SmoothScroll />
       <Navbar />
       <Hero />
