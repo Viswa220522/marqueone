@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 export default function MotorClubSection() {
@@ -100,6 +101,18 @@ export default function MotorClubSection() {
               position: 'relative',
             }}
           >
+            <Image
+              src="/hero_images/marqueone_track.png"
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{
+                objectFit: 'contain',
+                objectPosition: 'center 42%',
+                padding: '28px 28px 152px',
+                opacity: 0.95,
+              }}
+            />
             <div style={{ 
               position: 'absolute', 
               inset: 0, 

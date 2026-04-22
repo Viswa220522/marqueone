@@ -9,6 +9,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Marque One | Automotive Excellence",
   description: "Experience the ultimate luxury automotive ecosystem.",
+  icons: {
+    icon: "/hero_images/marqueone_weblogo.png",
+    shortcut: "/hero_images/marqueone_weblogo.png",
+    apple: "/hero_images/marqueone_weblogo.png",
+  },
 };
 
 export default function RootLayout({
