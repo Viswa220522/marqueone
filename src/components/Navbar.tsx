@@ -23,12 +23,21 @@ type NavPillRect = {
 const pillEase: [number, number, number, number] = [0.4, 0, 0.2, 1];
 const moveEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, value));
+
+const lerp = (start: number, end: number, amount: number) =>
+  start + (end - start) * amount;
+
 export default function Navbar() {
+  const [isMobile, setIsMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navSurfaceWidth, setNavSurfaceWidth] = useState(0);
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const navSurfaceRef = useRef<HTMLDivElement>(null);
   const navContainerRef = useRef<HTMLDivElement>(null);
   const navItemRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const fadeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -186,6 +195,19 @@ export default function Navbar() {
   };
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+
+    const updateIsMobile = (event?: MediaQueryListEvent) => {
+      setIsMobile(event ? event.matches : mediaQuery.matches);
+    };
+
+    updateIsMobile();
+    mediaQuery.addEventListener('change', updateIsMobile);
+
+    return () => mediaQuery.removeEventListener('change', updateIsMobile);
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrollY(y);
@@ -193,6 +215,19 @@ export default function Navbar() {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const measureNavSurface = () => {
+      if (navSurfaceRef.current) {
+        setNavSurfaceWidth(navSurfaceRef.current.getBoundingClientRect().width);
+      }
+    };
+
+    measureNavSurface();
+    window.addEventListener('resize', measureNavSurface);
+
+    return () => window.removeEventListener('resize', measureNavSurface);
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -254,6 +289,35 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', handleResize);
   }, [hoveredIndex, pillControls]);
 
+  const logoProgress = clamp(scrollY / 260, 0, 1);
+  const easedLogoProgress = 1 - Math.pow(1 - logoProgress, 3);
+  const mobileCenterFadeProgress = isMobile ? clamp(scrollY / 84, 0, 1) : 0;
+  const mobileLeftRevealProgress = isMobile ? clamp((scrollY - 96) / 60, 0, 1) : 0;
+  const finalLogoCenter = navSurfaceWidth > 0
+    ? clamp(navSurfaceWidth * 0.075, 66, 92)
+    : 78;
+  const finalTextShift = navSurfaceWidth > 0
+    ? clamp(navSurfaceWidth * 0.09, 40, 96)
+    : 72;
+  const desktopLogoScale = lerp(1.46, 0.58, easedLogoProgress);
+  const desktopLogoTranslateX = navSurfaceWidth > 0
+    ? lerp(0, finalLogoCenter - navSurfaceWidth / 2, easedLogoProgress)
+    : lerp(0, -520, easedLogoProgress);
+  const desktopLogoTranslateY = Math.sin(logoProgress * Math.PI) * 16;
+  const desktopBrandTextShift = lerp(0, finalTextShift, Math.pow(easedLogoProgress, 1.12));
+  const mobileCenterLogoScale = lerp(1, 0.85, mobileCenterFadeProgress);
+  const mobileCenterLogoOpacity = 1 - mobileCenterFadeProgress;
+  const mobileLeftLogoScale = lerp(0.98, 1.18, mobileLeftRevealProgress);
+  const mobileLeftLogoOpacity = mobileLeftRevealProgress;
+  const mobileLeftLogoWidth = lerp(0, 28, mobileLeftRevealProgress);
+  const mobileLeftLogoGap = lerp(0, 12, mobileLeftRevealProgress);
+  const mobileBrandTextShift = lerp(0, 8, mobileLeftRevealProgress);
+  const brandTextShift = isMobile ? mobileBrandTextShift : desktopBrandTextShift;
+  const centerLogoTransform = isMobile
+    ? `translate3d(0, 0, 0) translate(-50%, -50%) scale(${mobileCenterLogoScale})`
+    : `translate3d(${desktopLogoTranslateX}px, ${desktopLogoTranslateY}px, 0) translate(-50%, -50%) scale(${desktopLogoScale})`;
+  const centerLogoOpacity = isMobile ? mobileCenterLogoOpacity : 1;
+
   return (
     <nav
       style={{
@@ -267,6 +331,7 @@ export default function Navbar() {
       }}
     >
       <div
+        ref={navSurfaceRef}
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
@@ -274,6 +339,7 @@ export default function Navbar() {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '12px 28px',
+          position: 'relative',
           borderRadius: '9999px',
           background: scrolled
             ? 'rgba(255, 255, 255, 0.08)'
@@ -294,29 +360,80 @@ export default function Navbar() {
           href="#hero"
           onClick={(e) => handleNavClick(e, '#hero')}
           style={{
+            display: 'flex',
+            alignItems: 'center',
             fontSize: '1.125rem',
             fontWeight: 300,
+            lineHeight: 1,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
             color: 'rgba(255, 255, 255, 0.9)',
             textDecoration: 'none',
             cursor: 'pointer',
+            position: 'relative',
+            zIndex: 210,
           }}
         >
-          Marque <span style={{ color: '#8B0000', fontSize: 'inherit', fontWeight: 'inherit' }}>One</span>
+          {isMobile && (
+            <span
+              aria-hidden="true"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: `${mobileLeftLogoWidth}px`,
+                minWidth: `${mobileLeftLogoWidth}px`,
+                marginRight: `${mobileLeftLogoGap}px`,
+                opacity: mobileLeftLogoOpacity,
+                transform: `scale(${mobileLeftLogoScale})`,
+                transformOrigin: 'center center',
+                overflow: 'hidden',
+                flexShrink: 0,
+              }}
+            >
+              <Image
+                src="/hero_images/marqueone_logo.png"
+                alt=""
+                width={28}
+                height={28}
+                style={{
+                  width: '28px',
+                  height: 'auto',
+                  display: 'block',
+                  verticalAlign: 'middle',
+                  filter: 'drop-shadow(0 0 16px rgba(0,0,0,0.55))',
+                }}
+              />
+            </span>
+          )}
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              lineHeight: 1,
+              transform: `translate3d(${brandTextShift}px, 0, 0)`,
+              willChange: 'transform',
+            }}
+          >
+            Marque <span style={{ color: '#8B0000', fontSize: 'inherit', fontWeight: 'inherit' }}>One</span>
+          </span>
         </a>
 
         {/* Center Logo Icon */}
         <div
           style={{
             position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             left: '50%',
             top: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 200,
+            transform: centerLogoTransform,
+            transformOrigin: 'center center',
+            zIndex: 180,
             pointerEvents: 'none',
-            opacity: scrollY < 300 ? 0.85 : 0,
-            transition: 'opacity 1s ease',
+            willChange: 'transform',
+            opacity: centerLogoOpacity,
           }}
         >
           <Image
@@ -327,6 +444,8 @@ export default function Navbar() {
             style={{
               width: '80px',
               height: 'auto',
+              display: 'block',
+              verticalAlign: 'middle',
               filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.8))',
             }}
             priority
@@ -341,6 +460,7 @@ export default function Navbar() {
             alignItems: 'center',
             gap: '32px',
             position: 'relative',
+            zIndex: 210,
           }}
           className="nav-desktop"
           onMouseEnter={() => {
