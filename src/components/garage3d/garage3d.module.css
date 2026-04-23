@@ -127,8 +127,114 @@
     linear-gradient(180deg, #090909 0%, #0f0f0f 40%, #131313 100%);
 }
 
+/* Auto mode: canvas is decorative — browser owns all scroll/touch events */
 .sceneCanvas :global(canvas) {
+  pointer-events: none;
+  touch-action: auto;
+}
+
+/* Interact mode: canvas captures pointer events for OrbitControls */
+.sceneCanvasInteract :global(canvas) {
+  pointer-events: auto;
   touch-action: none;
+  cursor: grab;
+}
+
+.sceneCanvasInteract :global(canvas:active) {
+  cursor: grabbing;
+}
+
+.interactOverlay {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.interactBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  border: 1px solid var(--garage-border-strong);
+  background: rgba(15, 15, 15, 0.72);
+  backdrop-filter: blur(14px);
+  color: var(--garage-text);
+  font-family: var(--font-garage-display), sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.interactBtn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.interactBtnActive {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+}
+
+.interactBtnActive:hover {
+  background: rgba(239, 68, 68, 0.18);
+}
+
+.modelNav {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.navArrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--garage-border-strong);
+  background: rgba(15, 15, 15, 0.72);
+  backdrop-filter: blur(14px);
+  color: var(--garage-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.navArrow:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+.navArrow:active:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.navArrowDisabled {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 
 .overlay {
@@ -395,6 +501,27 @@
     left: 24px;
     bottom: 24px;
     width: calc(100vw - 48px);
+  }
+
+  .interactOverlay {
+    bottom: 24px;
+  }
+
+  .interactBtn {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 9px;
+  }
+
+  .modelNav {
+    bottom: 24px;
+    right: 24px;
+    gap: 8px;
+  }
+
+  .navArrow {
+    width: 42px;
+    height: 42px;
   }
 
   .heroCopy,

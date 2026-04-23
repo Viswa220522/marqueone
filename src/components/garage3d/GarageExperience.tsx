@@ -18,7 +18,6 @@ export default function GarageExperience() {
     setLoadedModelIds((current) =>
       current.includes(modelId) ? current : [...current, modelId]
     );
-    setActiveModelId(modelId);
   }, []);
 
   const handleModelSelect = useCallback((modelId: string) => {
@@ -36,6 +35,7 @@ export default function GarageExperience() {
         <Hero
           activeModelId={activeModelId}
           loadedCount={loadedModelIds.length}
+          loadedModelIds={loadedModelIds}
           loadingModelId={loadingModelId}
           models={garageModels}
           onActiveModelChange={handleModelSelect}
