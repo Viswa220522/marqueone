@@ -134,14 +134,38 @@
     linear-gradient(180deg, #090909 0%, #0f0f0f 40%, #131313 100%);
 }
 
-/* Auto mode: canvas is decorative — browser owns all scroll/touch events.
-   !important required: OrbitControls sets touch-action:none as inline style on mount. */
+/* ── Auto mode ──────────────────────────────────────────────────────────────
+   Every element in the canvas subtree is transparent to pointer events.
+   The R3F inner <div> (direct child of .sceneCanvas) has pointer-events:auto
+   by default — that's the element that was intercepting touches and blocking
+   scroll. Making the entire chain pointer-events:none lets touch events fall
+   through to <section.hero> which has touch-action:auto → native scroll. */
+.sceneCanvas {
+  pointer-events: none;
+}
+
+/* R3F creates a wrapper div inside .sceneCanvas */
+.sceneCanvas > div {
+  pointer-events: none;
+  touch-action: auto !important;
+}
+
 .sceneCanvas :global(canvas) {
   pointer-events: none;
   touch-action: auto !important;
 }
 
-/* Interact mode: canvas captures pointer events for OrbitControls */
+/* ── Interact mode ──────────────────────────────────────────────────────────
+   Restore pointer events so OrbitControls can receive touches. */
+.sceneCanvasInteract {
+  pointer-events: auto;
+}
+
+.sceneCanvasInteract > div {
+  pointer-events: auto;
+  touch-action: unset;
+}
+
 .sceneCanvasInteract :global(canvas) {
   pointer-events: auto;
   touch-action: none !important;
