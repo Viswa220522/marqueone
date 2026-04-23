@@ -120,6 +120,13 @@
   inset: 0;
 }
 
+/* canvasLayer holds only the WebGL canvas — no interactive DOM children.
+   pointer-events:none means touch hits pass straight to the document,
+   giving the browser a clean touch-action:auto ancestor → native scroll. */
+.canvasLayer {
+  pointer-events: none;
+}
+
 .canvasShell {
   background:
     radial-gradient(circle at 50% 35%, rgba(239, 68, 68, 0.16), transparent 22%),

@@ -91,7 +91,7 @@ function Stage({
   isMobile: boolean;
   isInteract: boolean;
 }) {
-  const { invalidate } = useThree();
+  const { invalidate, gl } = useThree();
   const groupRef = useRef<THREE.Group>(null);
   const autoAngleRef = useRef(0);
 
@@ -99,6 +99,13 @@ function Stage({
   // being re-created every time isInteract changes.
   const isInteractRef = useRef(isInteract);
   useEffect(() => { isInteractRef.current = isInteract; }, [isInteract]);
+
+  // OrbitControls sets domElement.style.touchAction='none' in its constructor.
+  // React runs child effects before parent effects, so by the time this runs,
+  // OrbitControls has already set it — we override it here directly.
+  useEffect(() => {
+    gl.domElement.style.touchAction = isInteract ? 'none' : 'auto';
+  }, [isInteract, gl.domElement]);
 
   // Drive auto-rotation at ~30 fps using demand rendering.
   // In auto mode we fire invalidate() on a throttled RAF loop; the scene
