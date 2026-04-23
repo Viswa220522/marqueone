@@ -1,4 +1,4 @@
-"'use client';
+'use client';
 
 import { lazy, Suspense, useMemo } from 'react';
 
