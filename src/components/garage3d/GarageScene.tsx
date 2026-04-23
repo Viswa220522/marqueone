@@ -13,6 +13,7 @@ import styles from './garage3d.module.css';
 type GarageSceneProps = {
   models: GarageModel[];
   activeModelId: string;
+  isInteract: boolean;
   onActiveModelChange: (modelId: string) => void;
   onLoadingChange: (modelId: string | null) => void;
   onModelLoaded: (modelId: string) => void;
@@ -172,9 +173,9 @@ function Stage({
         makeDefault
         enablePan={false}
         enableZoom={isInteract}
-        maxDistance={isMobile ? 8.5 : 7.25}
+        maxDistance={isMobile ? 10 : 7.25}
         maxPolarAngle={Math.PI / 1.9}
-        minDistance={isMobile ? 4.8 : 4.35}
+        minDistance={isMobile ? 5 : 4.35}
         minPolarAngle={Math.PI / 3.5}
         enableDamping
         dampingFactor={0.05}
@@ -189,13 +190,13 @@ function Stage({
 export default function GarageScene({
   models,
   activeModelId,
+  isInteract,
   onActiveModelChange,
   onLoadingChange,
   onModelLoaded,
 }: GarageSceneProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [loadedModels, setLoadedModels] = useState<LoadedModelMap>({});
-  const [isInteract, setIsInteract] = useState(false);
   const loadedScenesRef = useRef<LoadedModelMap>({});
 
   useEffect(() => {
@@ -253,8 +254,8 @@ export default function GarageScene({
     <div className={`${styles.sceneCanvas} ${isInteract ? styles.sceneCanvasInteract : ''}`}>
       <Canvas
         camera={{
-          fov: isMobile ? 38 : 33,
-          position: [0, 1.45, isMobile ? 7.4 : 6.1],
+          fov: isMobile ? 52 : 33,
+          position: [0, isMobile ? 1.0 : 1.45, isMobile ? 6.8 : 6.1],
         }}
         dpr={isMobile ? [1, 1.25] : [1, 1.8]}
         frameloop="demand"
@@ -275,34 +276,6 @@ export default function GarageScene({
         />
       </Canvas>
 
-      {/* Interact toggle — positioned inside scene wrapper so z-index is self-contained */}
-      <div className={styles.interactOverlay}>
-        <button
-          aria-pressed={isInteract}
-          className={`${styles.interactBtn} ${isInteract ? styles.interactBtnActive : ''}`}
-          onClick={() => setIsInteract((v) => !v)}
-        >
-          {isInteract ? (
-            <>
-              <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
-                <line x1="18" x2="6" y1="6" y2="18" />
-                <line x1="6" x2="18" y1="6" y2="18" />
-              </svg>
-              Exit Interaction
-            </>
-          ) : (
-            <>
-              <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
-                <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v1" />
-                <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2" />
-                <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8" />
-                <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
-              </svg>
-              Interact
-            </>
-          )}
-        </button>
-      </div>
     </div>
   );
 }

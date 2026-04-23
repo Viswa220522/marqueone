@@ -497,31 +497,105 @@
     padding: 0 14px;
   }
 
+  /* ── Mobile hero: canvas fills 100svh, all controls overlaid ── */
+  .hero {
+    height: 100svh;
+    min-height: 100svh;
+    display: block;
+    overflow: visible;
+  }
+
+  /* Restore full-screen absolute fill */
+  .canvasLayer {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    min-height: unset;
+    flex-shrink: unset;
+  }
+
+  /* Bottom gradient — readability layer behind text/controls */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 44%;
+    background: linear-gradient(
+      to top,
+      rgba(9, 9, 9, 0.92) 0%,
+      rgba(9, 9, 9, 0.55) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Text overlay: bottom-left, narrow so controls fit beside it */
   .overlay {
-    left: 24px;
-    bottom: 24px;
-    width: calc(100vw - 48px);
+    position: absolute;
+    left: 4vw;
+    bottom: 4svh;
+    width: min(56vw, 230px);
+    padding: 0;
+    box-sizing: border-box;
+    z-index: 2;
   }
 
-  .interactOverlay {
-    bottom: 24px;
+  /* Hide status chips — too cluttered on mobile */
+  .statusRow {
+    display: none;
   }
 
-  .interactBtn {
-    height: 36px;
-    padding: 0 14px;
-    font-size: 9px;
+  /* Title: slightly smaller to fit narrow column */
+  .heroTitle {
+    font-size: clamp(1.5rem, 5.5vw, 2.4rem);
+    margin-top: 6px;
   }
 
+  /* Desc: cap at 3 lines */
+  .heroCopy {
+    margin-top: 8px;
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Nav arrows: bottom-right, row, above interact button */
   .modelNav {
-    bottom: 24px;
-    right: 24px;
+    position: absolute;
+    right: 4vw;
+    bottom: calc(4svh + 38px + 10px);
+    width: auto;
+    padding: 0;
     gap: 8px;
+    justify-content: flex-end;
   }
 
   .navArrow {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Interact button: bottom-right corner, beside text */
+  .interactOverlay {
+    position: absolute;
+    right: 4vw;
+    bottom: 4svh;
+    left: auto;
+    transform: none;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+  }
+
+  .interactBtn {
+    height: 38px;
+    padding: 0 14px;
+    font-size: 9px;
   }
 
   .heroCopy,
