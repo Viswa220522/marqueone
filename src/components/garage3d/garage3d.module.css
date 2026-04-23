@@ -127,16 +127,17 @@
     linear-gradient(180deg, #090909 0%, #0f0f0f 40%, #131313 100%);
 }
 
-/* Auto mode: canvas is decorative — browser owns all scroll/touch events */
+/* Auto mode: canvas is decorative — browser owns all scroll/touch events.
+   !important required: OrbitControls sets touch-action:none as inline style on mount. */
 .sceneCanvas :global(canvas) {
   pointer-events: none;
-  touch-action: auto;
+  touch-action: auto !important;
 }
 
 /* Interact mode: canvas captures pointer events for OrbitControls */
 .sceneCanvasInteract :global(canvas) {
   pointer-events: auto;
-  touch-action: none;
+  touch-action: none !important;
   cursor: grab;
 }
 
